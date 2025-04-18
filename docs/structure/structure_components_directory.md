@@ -1,3 +1,4 @@
+```
 personal-assistant-agent/
 │
 ├── .env.development              # 開発環境の環境変数
@@ -68,3 +69,4 @@ personal-assistant-agent/
     ├── cursor_rules_context/     # Cursorルールコンテキスト関連
     ├── structure/                # 構造定義関連ドキュメント
     └── readme-md.md              # README関連ドキュメント
+```
