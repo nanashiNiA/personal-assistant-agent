@@ -1,0 +1,292 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+# ドキュメント構造ルール
+
+このファイルは、個人アシスタントエージェントプロジェクトにおけるドキュメント構造と命名規則を定義します。すべての開発者はこれらのルールに従って作業してください。
+
+## 1. ファイル命名規則
+
+### 1.1 一般的なルール
+- すべてのファイル名は小文字で記述する
+- 複数の単語はハイフン（-）で区切る
+- ファイル拡張子は適切なものを使用する（.ts, .md, .json など）
+- 特殊文字やスペースは使用しない
+
+### 1.2 特定タイプのファイル命名
+- **TypeScriptファイル**: camelCase形式で命名 (例: `userAuth.ts`, `reminderTool.ts`)
+- **テストファイル**: テスト対象のファイル名に `.test` または `.spec` を追加 (例: `reminderTool.test.ts`)
+- **ドキュメントファイル**: 内容を表す明確な名前を使用 (例: `api-reference.md`, `memory-system.md`)
+- **設定ファイル**: 適切な標準名を使用 (例: `.env`, `tsconfig.json`)
+
+## 2. ディレクトリ構造
+
+```
+personal-assistant-agent/
+├── .cursor/              # Cursor IDE設定
+│   └── rules/            # コーディングルール
+├── .env.development      # 開発環境変数
+├── .env.example          # 環境変数例
+├── .gitignore            # Git除外設定
+├── package.json          # プロジェクト設定
+├── tsconfig.json         # TypeScript設定
+├── README.md             # プロジェクト概要
+├── src/                  # ソースコード
+│   ├── mastra/           # Mastraフレームワーク関連
+│   │   ├── agents/       # エージェント定義
+│   │   ├── memory/       # 記憶システム
+│   │   ├── tools/        # ツール定義
+│   │   ├── workflows/    # ワークフロー定義
+│   │   ├── prompts/      # プロンプトテンプレート
+│   │   ├── utils/        # ユーティリティ関数
+│   │   └── index.ts      # エントリーポイント
+│   └── index.ts          # アプリケーションエントリーポイント
+├── tests/                # テストファイル
+└── docs/                 # ドキュメント
+```
+
+## 3. コード構造規約
+
+### 3.1 ファイルヘッダー
+各ソースファイルの先頭には以下のヘッダーを追加してください：
+
+```typescript
+/**
+ * @file [ファイルの説明]
+ * @module [モジュール名]
+ * @author [作成者名]
+ * @created [作成日: YYYY-MM-DD]
+ */
+```
+
+### 3.2 コンポーネント構造
+#### エージェント定義ファイル
+```typescript
+import { createAgent } from '@mastra/core/agent';
+// 他のインポート
+
+// 型定義
+interface AgentConfig {
+  // ...
+}
+
+// エージェント作成関数
+export const createCustomAgent = (config: AgentConfig) => {
+  // 実装
+};
+
+// デフォルトエクスポート
+export default createCustomAgent;
+```
+
+#### ツール定義ファイル
+```typescript
+import { createTool } from '@mastra/core/tool';
+// 他のインポート
+
+// ツール作成関数
+export const customTool = (config) => createTool({
+  name: 'toolName',
+  description: 'Tool description',
+
+  // 関数定義
+  functions: [
+    {
+      name: 'functionName',
+      description: 'Function description',
+      parameters: { /* パラメータ定義 */ },
+      async handler(params, context) {
+        // 実装
+      },
+    },
+    // 他の関数
+  ],
+});
+
+// デフォルトエクスポート
+export default customTool;
+```
+
+#### ワークフロー定義ファイル
+```typescript
+import { createWorkflow, createStep } from '@mastra/core/workflow';
+// 他のインポート
+
+// ワークフロー作成関数
+export const customWorkflow = (config) => createWorkflow({
+  name: 'workflowName',
+  description: 'Workflow description',
+
+  // ステップ定義
+  steps: {
+    step1: createStep({
+      name: 'stepName',
+      description: 'Step description',
+      input: { /* 入力定義 */ },
+      async execute(input, context) {
+        // 実装
+      },
+    }),
+    // 他のステップ
+  },
+});
+
+// デフォルトエクスポート
+export default customWorkflow;
+```
+
+## 4. ドキュメント規約
+
+### 4.1 マークダウンファイル構造
+- タイトルは `#` で開始（1つのみ）
+- セクションは `##` で開始
+- サブセクションは `###` で開始
+- 箇条書きは `-` または `*` を使用
+- 番号付きリストは `1.` で開始
+- コードブロックは ``` で囲む（言語名を指定）
+
+### 4.2 必須ドキュメント
+プロジェクトには以下のドキュメントが必要です：
+
+1. `README.md` - プロジェクト概要
+2. `docs/project-structure.md` - プロジェクト構造説明
+3. `docs/memory-system.md` - 記憶システムの詳細説明
+4. `docs/tools-integration.md` - ツール統合の詳細説明
+5. `docs/customization.md` - カスタマイズガイド
+6. `CONTRIBUTING.md` - 貢献ガイドライン
+7. `LICENSE` - ライセンス情報
+
+## 5. コメント規約
+
+### 5.1 インラインコメント
+- 複雑なロジックには適切な説明を追加
+- 一時的なコードには `// TODO: 説明` を追加
+- 潜在的な問題には `// FIXME: 説明` を追加
+- 重要な注意事項には `// NOTE: 説明` を追加
+
+### 5.2 関数コメント
+重要な関数には以下のようなJSDocコメントを追加します：
+
+```typescript
+/**
+ * 関数の説明
+ *
+ * @param {型} paramName - パラメータの説明
+ * @returns {型} - 戻り値の説明
+ * @throws {エラー型} - スローされる可能性のあるエラーの説明
+ * @example
+ * // 使用例
+ * const result = functionName(param);
+ */
+```
+
+## 6. インポート順序
+
+各ファイルでのインポート順序は以下の通りです：
+
+1. Node.js 標準モジュール
+2. 外部ライブラリ/依存関係
+3. Mastraフレームワークモジュール
+4. プロジェクト内の他のモジュール
+5. 相対パスでの同じディレクトリ内のモジュール
+
+例：
+```typescript
+// 1. Node.js 標準モジュール
+import fs from 'fs';
+import path from 'path';
+
+// 2. 外部ライブラリ/依存関係
+import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
+
+// 3. Mastraフレームワークモジュール
+import { createAgent } from '@mastra/core/agent';
+import { createTool } from '@mastra/core/tool';
+
+// 4. プロジェクト内の他のモジュール
+import { vectorMemory } from '../memory/vectorMemory';
+import { weatherTool } from '../tools/weatherTool';
+
+// 5. 相対パスでの同じディレクトリ内のモジュール
+import { assistantAgentConfig } from './config';
+```
+
+## 7. エラー処理規約
+
+### 7.1 エラーの種類
+プロジェクト固有のエラー型を定義して使用します：
+
+```typescript
+// src/mastra/utils/errors.ts
+export class MemoryError extends Error {
+  constructor(message: string) {
+    super(`Memory Error: ${message}`);
+    this.name = 'MemoryError';
+  }
+}
+
+export class ToolError extends Error {
+  constructor(message: string) {
+    super(`Tool Error: ${message}`);
+    this.name = 'ToolError';
+  }
+}
+
+// その他のエラー型...
+```
+
+### 7.2 エラー処理パターン
+```typescript
+try {
+  // 処理
+} catch (error) {
+  // エラー型の特定
+  if (error instanceof MemoryError) {
+    // メモリエラー処理
+  } else if (error instanceof ToolError) {
+    // ツールエラー処理
+  } else {
+    // その他のエラー処理
+    console.error('Unexpected error:', error);
+    // 適切な上位コンポーネントへの通知
+  }
+}
+```
+
+## 8. 型定義規約
+
+### 8.1 型定義ファイル
+共通の型定義は専用のファイルに格納します：
+
+```typescript
+// src/mastra/types/index.ts
+export interface User {
+  id: string;
+  name: string;
+  preferences: UserPreferences;
+}
+
+export interface UserPreferences {
+  // ...
+}
+
+// その他の型定義...
+```
+
+### 8.2 型のインポートと使用
+```typescript
+import { User, UserPreferences } from '../types';
+
+// 型を使用した関数
+function processUser(user: User): void {
+  // 処理
+}
+```
+
+---
+
+このドキュメントは随時更新されます。追加すべき規約や変更点がある場合は、プルリクエストを作成してください。
+最終更新日: 2025-04-19

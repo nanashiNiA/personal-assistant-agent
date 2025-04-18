@@ -1,0 +1,12 @@
+# 個人アシスタントエージェント プロジェクト構造定義
+# 目的: プロジェクト内のすべてのドキュメント・コンポーネント・テーブルの関係性を明示的に定義し、依存関係を可視化する
+
+# 各セクションは別ファイルに分割
+# ドキュメントセクション - 設計書やドキュメント構造
+docs_file: docs/structure_docs.yaml
+
+# 型定義セクション - 主要な型定義ファイル
+types_file: docs/structure_types.yaml
+
+# データベースセクション - テーブル定義と関係性
+database_file: docs/structure_database.yaml

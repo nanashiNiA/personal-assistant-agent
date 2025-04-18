@@ -1,0 +1,28 @@
+{
+  "name": "personal-assistant-agent",
+  "version": "0.1.0",
+  "description": "Personal assistant agent built with Mastra framework",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "build": "tsc",
+    "test": "jest",
+    "dev": "nodemon --exec ts-node src/index.ts"
+  },
+  "keywords": [
+    "assistant",
+    "agent",
+    "ai"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.14.1",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "dotenv": "^16.5.0"
+  }
+}

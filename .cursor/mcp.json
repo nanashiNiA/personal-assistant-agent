@@ -1,0 +1,28 @@
+{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@smithery/cli", "run", "@smithery-ai/github"],
+      "env": {
+        "GITHUB_TOKEN": "@.env:GITHUB_PERSONAL_ACCESS_TOKEN"
+      }
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@smithery/cli", "run", "@microsoft/playwright-mcp"],
+      "env": {}
+    },
+    "neon": {
+      "command": "npx",
+      "args": ["-y", "@smithery/cli", "run", "@smithery-ai/pg-mcp"],
+      "env": {
+        "PGHOST": "@.env:NEON_HOST",
+        "PGDATABASE": "@.env:NEON_DATABASE",
+        "PGUSER": "@.env:NEON_USER",
+        "PGPASSWORD": "@.env:NEON_PASSWORD",
+        "PGPORT": "@.env:NEON_PORT",
+        "PGSSLMODE": "@.env:NEON_SSL_MODE"
+      }
+    }
+  }
+}

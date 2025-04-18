@@ -1,0 +1,271 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# フロントエンドプロジェクトルール
+
+## 技術スタック
+
+- フレームワーク: Next.js 15.1.0 (App Router)
+- 言語: TypeScript 5.0.0
+- 状態管理: Zustand
+- UIライブラリ: Tailwind CSS + Radix UI + Shadcn UI
+
+## フォルダ構成
+
+プロジェクトのフォルダ構成は `docs/structure_directory.md` で定義されています。主要な構成は以下の通りです：
+
+```
+Questum-student-pc/
+├── app/                        # Next.js Appディレクトリ（ページ）
+├── components/                 # UI・機能コンポーネント
+├── lib/                        # ユーティリティ関数
+├── types/                      # 型定義
+└── styles/                     # スタイル関連
+```
+
+## コンポーネント設計ルール
+
+### 1. コンポーネント分類
+
+- **プレゼンテーショナルコンポーネント**
+  - UI表示のみに特化（Card, Button, QuestCardなど）
+  - 可能な限り純粋関数として実装
+  - プロップス型定義を必ず行う
+
+- **コンテナコンポーネント**
+  - データ取得・状態管理を担当
+  - ページコンポーネントまたは大きな機能ブロックで使用
+
+- **ページコンポーネント**
+  - app/ディレクトリ内のpage.tsxファイル
+  - ルーティングと全体レイアウトを担当
+  - コンテナコンポーネントをラップして使用
+
+### 2. 命名規則
+
+- **ファイル名**
+  - コンポーネント: パスカルケース（例: `QuestCard.tsx`）
+  - ユーティリティ関数: キャメルケース（例: `useAuth.ts`）
+  - 定数: ケバブケース（例: `quest-constants.ts`）
+
+- **コンポーネント名**
+  - 機能を表す名詞または名詞句
+  - 具体的な役割を示す名前（例: `QuestDetailForm` > `Form`）
+  - プレフィックスを使用して種類を区別（例: プレゼンテーショナルコンポーネントに「Base」プレフィックス）
+
+- **プロップス**
+  - 型定義は同一ファイル内でコンポーネントの前に定義
+  - インターフェース名は「コンポーネント名+Props」（例: `QuestCardProps`）
+
+### 3. ファイル構造
+
+- 各ファイルは1つのエクスポートコンポーネントを持つ
+- 関連する小コンポーネントは同じファイル内に定義
+- 複数箇所で使用されるコンポーネントは分離
+- コンポーネントのサイズが大きくなったら分割を検討
+
+### 4. スタイリング
+
+- Tailwind CSSクラスを直接使用
+- 複雑なスタイルパターンはコンポーネントにカプセル化
+- 条件付きスタイルはclsxまたはtailwind-mergeライブラリを使用
+- Shadcn UIコンポーネントをベースとしたカスタマイズを推奨
+
+```typescript
+import { cn } from "@/lib/utils";
+
+const Button = ({ variant, className, ...props }) => {
+  return (
+    <button
+      className={cn(
+        "base-styles",
+        variant === "primary" && "primary-styles",
+        variant === "secondary" && "secondary-styles",
+        className
+      )}
+      {...props}
+    />
+  );
+};
+```
+
+### 5. 状態管理
+
+- **ローカル状態**
+  - コンポーネント内で完結する状態はuseStateで管理
+  - 複雑な状態はuseReducerで管理
+
+- **グローバル状態**
+  - Zustandストアを使用
+  - 機能ごとにストアを分割（例: `useAuthStore`, `useQuestStore`）
+  - ストアへのアクセスはカスタムフックを通じて行う
+  - そのページUIで完結しない状態管理は必ずstoreディレクトリで生成する
+  - 新しいUIや機能を追加する際は、既存のstoreを確認し、統合管理できそうであればそれを編集する
+
+```typescript
+// lib/store/quest-store.ts
+import { create } from 'zustand';
+
+export const useQuestStore = create((set) => ({
+  quests: [],
+  loading: false,
+  setQuests: (quests) => set({ quests }),
+  // ...
+}));
+```
+
+### 6. データ取得
+
+- APIクライアントは `lib/api` に機能ごとに分割
+- データ取得ロジックはカスタムフックにカプセル化
+- エラーハンドリングとローディング状態の一貫した管理
+
+```typescript
+// lib/hooks/use-quests.ts
+export const useQuests = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [quests, setQuests] = useState([]);
+
+  const fetchQuests = async () => {
+    setLoading(true);
+    try {
+      const data = await api.quests.getAll();
+      setQuests(data);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { quests, loading, error, fetchQuests };
+};
+```
+
+## レスポンシブデザインルール
+
+### 1. ブレークポイント
+
+Tailwind CSSの標準ブレークポイントを使用：
+
+- **モバイル**: base（~767px）
+- **タブレット**: md（768px~1023px）
+- **デスクトップ**: lg（1024px~）
+
+### 2. レスポンシブ実装アプローチ
+
+- モバイルファーストでのデザイン
+- 各コンポーネントはすべてのブレークポイントに対応
+- メディアクエリによる分岐よりもTailwindのブレークポイント接頭辞を優先
+
+```tsx
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+  {/* コンテンツ */}
+</div>
+```
+
+### 3. ナビゲーション
+
+- モバイル: ハンバーガーメニュー + 下部タブナビ
+- タブレット: 折りたたみ可能なサイドバー
+- デスクトップ: 常時表示のサイドバー
+
+## アクセシビリティルール
+
+- セマンティックなHTML要素の使用
+- 適切なARIA属性の設定
+- キーボードナビゲーションのサポート
+- カラーコントラスト比の確保
+- フォーカス状態の明示的な視覚表現
+
+## パフォーマンス最適化ルール
+
+### 1. コード分割
+
+- 動的インポートによる遅延ロード
+- Next.jsの自動コード分割活用
+
+### 2. 画像最適化
+
+- Next.jsのImageコンポーネント使用
+
+```tsx
+import Image from 'next/image';
+
+<Image
+  src="/path/to/image.jpg"
+  alt="説明テキスト"
+  width={300}
+  height={200}
+  priority={isImportant}
+/>
+```
+
+### 3. コンポーネント最適化
+
+- React.memoの適切な使用
+- useMemo, useCallbackによるメモ化
+- 不要な再レンダリングの防止
+
+## 型定義ルール
+
+- 型定義は `types/` ディレクトリに機能ごとに分割
+- exportされる型は明示的な命名（Interfaceを優先）
+- Utility Typesの積極的な活用
+- バリデーションはZodスキーマと連携
+
+```typescript
+// types/quest.ts
+export interface Quest {
+  id: string;
+  title: string;
+  description: string;
+  status: 'draft' | 'published' | 'closed';
+  createdAt: Date;
+  // ...
+}
+
+export type QuestCreateInput = Omit<Quest, 'id' | 'createdAt'>;
+```
+
+## テストルール
+
+- コンポーネントテスト: Jest + React Testing Library
+- 統合テスト: Cypress
+- 以下のパターンで最低限のテストを実装
+  - 主要なプレゼンテーショナルコンポーネント
+  - フォーム送信などの重要なユーザーフロー
+  - 状態管理ロジック
+
+## コミットルール
+
+- 機能単位での小さなコミット
+- プレフィックスを使用したコミットメッセージ
+  - feat: 新機能
+  - fix: バグ修正
+  - docs: ドキュメント変更
+  - style: フォーマット変更
+  - refactor: リファクタリング
+  - test: テスト追加・修正
+  - chore: その他雑務
+
+## コードレビュールール
+
+- 命名規則の一貫性
+- コンポーネント責務の明確さ
+- パフォーマンスへの配慮
+- アクセシビリティ対応
+- 型安全性の確保
