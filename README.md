@@ -33,7 +33,7 @@
 
 ```bash
 # リポジトリのクローン
-git clone https://github.com/your-username/personal-assistant-agent.git
+git clone https://github.com/nanashiNiA/personal-assistant-agent
 cd personal-assistant-agent
 
 # 依存関係のインストール
