@@ -7,6 +7,14 @@
 import { create } from 'zustand';
 import { Task, TaskStep, TaskStatus } from '../types/task';
 
+// 状態の更新と取得のための型定義
+type SetState = (
+  partial: Partial<TaskState> | ((state: TaskState) => Partial<TaskState>),
+  replace?: boolean
+) => void;
+
+type GetState = () => TaskState;
+
 interface TaskState {
   // データ
   tasks: Task[];
@@ -29,7 +37,7 @@ interface TaskState {
   resetError: () => void;
 }
 
-export const useTaskStore = create<TaskState>((set, get) => ({
+export const useTaskStore = create<TaskState>((set: SetState, get: GetState) => ({
   // 初期データ
   tasks: [],
   currentTaskId: null,
@@ -132,7 +140,7 @@ export const useTaskStore = create<TaskState>((set, get) => ({
     }
   },
 
-  fetchTaskDetails: async (taskId) => {
+  fetchTaskDetails: async (taskId: string) => {
     set({ isLoading: true, error: null });
     try {
       // 実際の実装では、APIからタスクの詳細を取得
@@ -143,13 +151,13 @@ export const useTaskStore = create<TaskState>((set, get) => ({
     }
   },
 
-  setCurrentTask: (taskId) => set({ currentTaskId: taskId }),
+  setCurrentTask: (taskId: string | null) => set({ currentTaskId: taskId }),
 
-  selectTask: (taskId) => set({ selectedTaskId: taskId, selectedStepId: null }),
+  selectTask: (taskId: string | null) => set({ selectedTaskId: taskId, selectedStepId: null }),
 
-  selectStep: (stepId) => set({ selectedStepId: stepId }),
+  selectStep: (stepId: string | null) => set({ selectedStepId: stepId }),
 
-  updateTaskProgress: async (taskId, progress) => {
+  updateTaskProgress: async (taskId: string, progress: number) => {
     set({ isLoading: true, error: null });
     try {
       // 実際の実装では、APIを使用してタスクの進捗を更新
@@ -177,7 +185,7 @@ export const useTaskStore = create<TaskState>((set, get) => ({
     }
   },
 
-  updateStepStatus: async (taskId, stepId, status) => {
+  updateStepStatus: async (taskId: string, stepId: string, status: TaskStatus) => {
     set({ isLoading: true, error: null });
     try {
       // 実際の実装では、APIを使用してステップのステータスを更新

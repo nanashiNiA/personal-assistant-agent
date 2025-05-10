@@ -12,6 +12,14 @@ import {
   ConversationFilter
 } from '../types/conversation';
 
+// 状態の更新と取得のための型定義
+type SetState = (
+  partial: Partial<ConversationState> | ((state: ConversationState) => Partial<ConversationState>),
+  replace?: boolean
+) => void;
+
+type GetState = () => ConversationState;
+
 interface ConversationState {
   // データ
   sessions: ConversationSession[];
@@ -35,7 +43,7 @@ interface ConversationState {
   resetError: () => void;
 }
 
-export const useConversationStore = create<ConversationState>((set, get) => ({
+export const useConversationStore = create<ConversationState>((set: SetState, get: GetState) => ({
   // 初期データ
   sessions: [],
   currentSessionId: null,
@@ -124,7 +132,7 @@ export const useConversationStore = create<ConversationState>((set, get) => ({
     }
   },
 
-  fetchSessionMessages: async (sessionId) => {
+  fetchSessionMessages: async (sessionId: string) => {
     set({ isLoading: true, error: null });
     try {
       // 実際の実装では、APIからセッション固有のメッセージを取得
@@ -135,7 +143,7 @@ export const useConversationStore = create<ConversationState>((set, get) => ({
     }
   },
 
-  searchMessages: async (filter) => {
+  searchMessages: async (filter: ConversationFilter) => {
     set({ isLoading: true, error: null, filter });
     try {
       // 実際の実装では、APIでメッセージを検索
@@ -149,13 +157,13 @@ export const useConversationStore = create<ConversationState>((set, get) => ({
     }
   },
 
-  setCurrentSession: (sessionId) => set({ currentSessionId: sessionId }),
+  setCurrentSession: (sessionId: string | null) => set({ currentSessionId: sessionId }),
 
-  selectMessage: (messageId) => set({ selectedMessageId: messageId }),
+  selectMessage: (messageId: string | null) => set({ selectedMessageId: messageId }),
 
-  selectContext: (contextId) => set({ selectedContextId: contextId }),
+  selectContext: (contextId: string | null) => set({ selectedContextId: contextId }),
 
-  setFilter: (filter) => set({ filter }),
+  setFilter: (filter: ConversationFilter | null) => set({ filter }),
 
   resetError: () => set({ error: null })
 }));

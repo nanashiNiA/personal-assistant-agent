@@ -12,6 +12,14 @@ import {
   UserProfile
 } from '../types/memory';
 
+// 状態の更新と取得のための型定義
+type SetState = (
+  partial: Partial<MemoryState> | ((state: MemoryState) => Partial<MemoryState>),
+  replace?: boolean
+) => void;
+
+type GetState = () => MemoryState;
+
 interface MemoryState {
   // データ
   memories: LongTermMemoryItem[];
@@ -37,7 +45,7 @@ interface MemoryState {
   resetError: () => void;
 }
 
-export const useMemoryStore = create<MemoryState>((set, get) => ({
+export const useMemoryStore = create<MemoryState>((set: SetState, get: GetState) => ({
   // 初期データ
   memories: [],
   categories: [],
@@ -199,8 +207,8 @@ export const useMemoryStore = create<MemoryState>((set, get) => ({
     }
   },
 
-  selectMemory: (memoryId) => set({ selectedMemoryId: memoryId }),
-  selectCategory: (categoryId) => set({ selectedCategoryId: categoryId }),
-  selectTag: (tagId) => set({ selectedTagId: tagId }),
+  selectMemory: (memoryId: string | null) => set({ selectedMemoryId: memoryId }),
+  selectCategory: (categoryId: string | null) => set({ selectedCategoryId: categoryId }),
+  selectTag: (tagId: string | null) => set({ selectedTagId: tagId }),
   resetError: () => set({ error: null })
 }));

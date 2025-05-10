@@ -13,7 +13,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/a
 interface RequestOptions {
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
   headers?: Record<string, string>;
-  body?: any;
+  body?: Record<string, unknown>;
   credentials?: RequestCredentials;
 }
 
@@ -24,6 +24,14 @@ interface ApiResponse<T> {
   data?: T;
   error?: string;
   status: number;
+}
+
+/**
+ * APIエラーレスポンス
+ */
+interface ApiErrorResponse {
+  message?: string;
+  [key: string]: unknown;
 }
 
 /**
@@ -51,8 +59,9 @@ async function request<T>(endpoint: string, options: RequestOptions = {}): Promi
     const data = isJson ? await response.json() : await response.text();
 
     if (!response.ok) {
+      const errorData = isJson ? data as ApiErrorResponse : { message: data as string };
       return {
-        error: isJson && data.message ? data.message : 'APIリクエストエラー',
+        error: errorData.message || 'APIリクエストエラー',
         status: response.status
       };
     }
@@ -73,48 +82,62 @@ async function request<T>(endpoint: string, options: RequestOptions = {}): Promi
  * 記憶関連のAPI
  */
 export const memoryApi = {
-  getMemories: (categoryId?: string, tagId?: string) =>
-    request(`/memories${categoryId ? `?category=${categoryId}` : ''}${tagId ? `&tag=${tagId}` : ''}`),
+  getMemories: <T>(categoryId?: string, tagId?: string) =>
+    request<T>(`/memories${categoryId ? `?category=${categoryId}` : ''}${tagId ? `&tag=${tagId}` : ''}`),
 
-  getCategories: () => request('/memories/categories'),
+  getCategories: <T>() => request<T>('/memories/categories'),
 
-  getTags: () => request('/memories/tags'),
+  getTags: <T>() => request<T>('/memories/tags'),
 
-  getUserProfile: () => request('/user/profile')
+  getUserProfile: <T>() => request<T>('/user/profile')
 };
+
+/**
+ * 会話検索フィルタ
+ */
+interface ConversationSearchFilter {
+  dateRange?: {
+    start?: string;
+    end?: string;
+  };
+  senders?: string[];
+  contextIds?: string[];
+  keywords?: string[];
+  [key: string]: unknown;
+}
 
 /**
  * 会話関連のAPI
  */
 export const conversationApi = {
-  getSessions: () => request('/conversations/sessions'),
+  getSessions: <T>() => request<T>('/conversations/sessions'),
 
-  getSessionMessages: (sessionId: string) =>
-    request(`/conversations/sessions/${sessionId}/messages`),
+  getSessionMessages: <T>(sessionId: string) =>
+    request<T>(`/conversations/sessions/${sessionId}/messages`),
 
-  searchMessages: (filter: any) =>
-    request('/conversations/search', { method: 'POST', body: filter })
+  searchMessages: <T>(filter: ConversationSearchFilter) =>
+    request<T>('/conversations/search', { method: 'POST', body: filter as Record<string, unknown> })
 };
 
 /**
  * タスク関連のAPI
  */
 export const taskApi = {
-  getTasks: () => request('/tasks'),
+  getTasks: <T>() => request<T>('/tasks'),
 
-  getTaskDetails: (taskId: string) =>
-    request(`/tasks/${taskId}`),
+  getTaskDetails: <T>(taskId: string) =>
+    request<T>(`/tasks/${taskId}`),
 
-  updateTaskProgress: (taskId: string, progress: number) =>
-    request(`/tasks/${taskId}/progress`, {
+  updateTaskProgress: <T>(taskId: string, progress: number) =>
+    request<T>(`/tasks/${taskId}/progress`, {
       method: 'PUT',
-      body: { progress }
+      body: { progress } as Record<string, unknown>
     }),
 
-  updateStepStatus: (taskId: string, stepId: string, status: string) =>
-    request(`/tasks/${taskId}/steps/${stepId}/status`, {
+  updateStepStatus: <T>(taskId: string, stepId: string, status: string) =>
+    request<T>(`/tasks/${taskId}/steps/${stepId}/status`, {
       method: 'PUT',
-      body: { status }
+      body: { status } as Record<string, unknown>
     })
 };
 
