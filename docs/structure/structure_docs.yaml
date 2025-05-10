@@ -1,0 +1,71 @@
+# 個人アシスタントエージェント ドキュメント構造定義
+# 目的: プロジェクト内のすべてのドキュメントとその関係性を定義
+
+documents:
+  - id: project-structure
+    name: プロジェクト構造説明
+    path: docs/project-structure.md
+    description: プロジェクト全体の構造と主要コンポーネントの説明
+    dependencies: []
+
+  - id: memory-system
+    name: 記憶システムの詳細説明
+    path: docs/memory-system.md
+    description: 記憶システム（短期記憶、長期記憶、ワーキングメモリ）の詳細設計
+    dependencies: [project-structure]
+
+  # 記憶システムUI設計ドキュメント
+  - id: memory-ui-design
+    name: 記憶システムUI設計
+    path: docs/memory-system/ui-design/memory-ui-design.md
+    description: 記憶システムのUI設計の全体方針と概要
+    dependencies: [memory-system]
+
+  - id: conversation-history-ui
+    name: 会話履歴表示の詳細設計
+    path: docs/memory-system/ui-design/conversation-history.md
+    description: 過去の会話を表示するUIコンポーネントの詳細設計
+    dependencies: [memory-ui-design]
+
+  - id: long-term-memory-ui
+    name: 長期記憶の視覚化 詳細設計
+    path: docs/memory-system/ui-design/long-term-memory.md
+    description: 長期記憶情報を表示・検索するUIインターフェースの詳細設計
+    dependencies: [memory-ui-design]
+
+  - id: working-memory-ui
+    name: ワーキングメモリの視覚化 詳細設計
+    path: docs/memory-system/ui-design/working-memory.md
+    description: 現在の思考プロセスと進行中のタスクを表示するUIの詳細設計
+    dependencies: [memory-ui-design]
+
+  - id: interaction-flow
+    name: 記憶システム インタラクションフロー設計
+    path: docs/memory-system/ui-design/interaction-flow.md
+    description: 記憶システムのユーザーインターフェースにおけるインタラクションフローの定義
+    dependencies: [memory-ui-design, conversation-history-ui, long-term-memory-ui, working-memory-ui]
+
+  - id: visual-guidelines
+    name: 記憶システム ビジュアルデザインガイドライン
+    path: docs/memory-system/ui-design/visual-guidelines.md
+    description: 記憶システムUIのビジュアルデザインの基準と方針の定義
+    dependencies: [memory-ui-design]
+
+  # ワイヤーフレーム関連
+  - id: wireframes-memory-views
+    name: 記憶システム ワイヤーフレーム
+    path: docs/wireframes/memory-views/README.md
+    description: 記憶システムの各画面のワイヤーフレームファイルとガイドライン
+    dependencies: [memory-ui-design, conversation-history-ui, long-term-memory-ui, working-memory-ui, interaction-flow]
+
+  - id: workflow-integration-design
+    name: ワークフロー統合設計
+    path: docs/workflow-integration-design.md
+    description: ワークフローの統合に関する設計ドキュメント
+    dependencies: [project-structure]
+
+  - id: design-plan
+    name: 開発計画書
+    path: docs/design-plan.md
+    description: 個人アシスタントエージェント実装計画
+    dependencies: [project-structure]
