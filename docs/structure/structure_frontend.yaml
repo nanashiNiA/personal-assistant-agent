@@ -1,0 +1,80 @@
+# 個人アシスタントエージェント フロントエンド構造定義
+# 目的: プロジェクト内のフロントエンドコンポーネントとその関係性を定義
+
+frontend_components:
+  # 記憶システム関連コンポーネント
+  - id: memory-display
+    name: 記憶表示コンポーネント
+    path: src/frontend/components/memory/MemoryDisplay.tsx
+    description: 長期記憶情報を表示するコンポーネント
+    dependencies: []
+
+  - id: memory-category-view
+    name: 記憶カテゴリ表示
+    path: src/frontend/components/memory/MemoryCategoryView.tsx
+    description: 記憶情報をカテゴリ別に表示するコンポーネント
+    dependencies: [memory-display]
+
+  - id: memory-tag-cloud
+    name: 記憶タグクラウド
+    path: src/frontend/components/memory/MemoryTagCloud.tsx
+    description: 重要な記憶情報をタグクラウドとして表示するコンポーネント
+    dependencies: [memory-display]
+
+  - id: user-profile-display
+    name: ユーザープロファイル表示
+    path: src/frontend/components/memory/UserProfileDisplay.tsx
+    description: ユーザーの基本情報を表示するコンポーネント
+    dependencies: []
+
+  # 会話履歴関連コンポーネント
+  - id: conversation-history
+    name: 会話履歴表示
+    path: src/frontend/components/conversation/ConversationHistory.tsx
+    description: 過去の会話を時系列で表示するコンポーネント
+    dependencies: []
+
+  - id: conversation-message
+    name: 会話メッセージ
+    path: src/frontend/components/conversation/ConversationMessage.tsx
+    description: 個別の会話メッセージを表示するコンポーネント
+    dependencies: [conversation-history]
+
+  - id: conversation-search
+    name: 会話検索
+    path: src/frontend/components/conversation/ConversationSearch.tsx
+    description: 過去の会話を検索するコンポーネント
+    dependencies: [conversation-history]
+
+  - id: context-visualizer
+    name: コンテキスト認識視覚化
+    path: src/frontend/components/conversation/ContextVisualizer.tsx
+    description: 会話のコンテキスト認識を視覚的に表現するコンポーネント
+    dependencies: [conversation-history]
+
+  # タスク状態関連コンポーネント
+  - id: task-display
+    name: タスク表示
+    path: src/frontend/components/tasks/TaskDisplay.tsx
+    description: 現在進行中のタスクを表示するコンポーネント
+    dependencies: []
+
+  - id: task-progress
+    name: タスク進捗状況
+    path: src/frontend/components/tasks/TaskProgress.tsx
+    description: タスクの進捗状況を視覚的に表示するコンポーネント
+    dependencies: [task-display]
+
+  - id: step-navigator
+    name: ステップナビゲーター
+    path: src/frontend/components/tasks/StepNavigator.tsx
+    description: タスクのステップをナビゲートするコンポーネント
+    dependencies: [task-display, task-progress]
+
+# フロントエンドの技術スタック定義
+frontend_tech_stack:
+  framework: "React"
+  ui_library: "Shadcn UI"
+  styling: "Tailwind CSS"
+  state_management: "Zustand"
+  data_visualization: "D3.js"

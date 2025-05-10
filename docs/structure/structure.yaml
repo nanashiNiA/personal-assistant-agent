@@ -10,3 +10,6 @@ types_file: docs/structure_types.yaml
 
 # データベースセクション - テーブル定義と関係性
 database_file: docs/structure_database.yaml
+
+# フロントエンドセクション - フロントエンドコンポーネント構造
+frontend_file: docs/structure_frontend.yaml

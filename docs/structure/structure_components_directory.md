@@ -52,19 +52,72 @@ personal-assistant-agent/
 │   │   │
 │   │   └── index.ts              # Mastraメインエントリーポイント
 │   │
+│   ├── frontend/                 # フロントエンドディレクトリ
+│   │   ├── components/           # UIコンポーネント
+│   │   │   ├── memory/           # 記憶システム関連コンポーネント
+│   │   │   │   ├── MemoryDisplay.tsx         # 記憶表示コンポーネント
+│   │   │   │   ├── MemoryCategoryView.tsx    # 記憶カテゴリ表示
+│   │   │   │   ├── MemoryTagCloud.tsx        # 記憶タグクラウド
+│   │   │   │   └── UserProfileDisplay.tsx    # ユーザープロファイル表示
+│   │   │   │
+│   │   │   ├── conversation/     # 会話履歴関連コンポーネント
+│   │   │   │   ├── ConversationHistory.tsx   # 会話履歴表示
+│   │   │   │   ├── ConversationMessage.tsx   # 会話メッセージ
+│   │   │   │   ├── ConversationSearch.tsx    # 会話検索
+│   │   │   │   └── ContextVisualizer.tsx     # コンテキスト認識視覚化
+│   │   │   │
+│   │   │   └── tasks/            # タスク状態関連コンポーネント
+│   │   │       ├── TaskDisplay.tsx           # タスク表示
+│   │   │       ├── TaskProgress.tsx          # タスク進捗状況
+│   │   │       └── StepNavigator.tsx         # ステップナビゲーター
+│   │   │
+│   │   ├── lib/                  # フロントエンド用ユーティリティ
+│   │   │   ├── api.ts            # APIクライアント
+│   │   │   └── hooks/            # カスタムフック
+│   │   │
+│   │   ├── store/                # 状態管理
+│   │   │   ├── memoryStore.ts    # 記憶情報の状態管理
+│   │   │   ├── conversationStore.ts # 会話履歴の状態管理
+│   │   │   └── taskStore.ts      # タスク状態の管理
+│   │   │
+│   │   └── types/                # フロントエンド用型定義
+│   │       ├── memory.ts         # 記憶関連の型定義
+│   │       ├── conversation.ts   # 会話関連の型定義
+│   │       └── task.ts           # タスク関連の型定義
+│   │
 │   └── index.ts                  # アプリケーションのエントリーポイント
 │
 ├── tests/                        # テスト
 │   ├── agents/                   # エージェントテスト
 │   ├── memory/                   # 記憶システムテスト
 │   ├── tools/                    # ツールテスト
-│   └── workflows/                # ワークフローテスト
+│   ├── workflows/                # ワークフローテスト
+│   └── frontend/                 # フロントエンドテスト
+│       ├── components/           # コンポーネントテスト
+│       │   ├── memory/           # 記憶コンポーネントテスト
+│       │   ├── conversation/     # 会話コンポーネントテスト
+│       │   └── tasks/            # タスクコンポーネントテスト
+│       └── store/                # ストアテスト
 │
 └── docs/                         # ドキュメント
     ├── workflow-integration-design.md # ワークフロー統合設計
     ├── design-plan.md          # 設計計画
     ├── memory-system.md          # 記憶システムの詳細説明
+    ├── memory-system/            # 記憶システム関連ドキュメント
+    │   └── ui-design/            # UI設計関連
+    │       ├── memory-ui-design.md     # 記憶システムUI設計
+    │       ├── conversation-history.md # 会話履歴表示の詳細設計
+    │       ├── long-term-memory.md     # 長期記憶の視覚化設計
+    │       ├── working-memory.md       # ワーキングメモリ視覚化設計
+    │       ├── interaction-flow.md     # インタラクションフロー設計
+    │       └── visual-guidelines.md    # ビジュアルガイドライン
     ├── mcp/                      # MCP関連ドキュメント
     ├── cursor_rules_context/     # Cursorルールコンテキスト関連
     ├── structure/                # 構造定義関連ドキュメント
+    │   ├── structure.yaml              # プロジェクト構造定義
+    │   ├── structure_docs.yaml         # ドキュメント構造定義
+    │   ├── structure_types.yaml        # 型定義構造
+    │   ├── structure_database.yaml     # データベース構造定義
+    │   ├── structure_frontend.yaml     # フロントエンド構造定義
+    │   └── structure_components_directory.md # ディレクトリ構造説明
     └── readme-md.md              # README関連ドキュメント
