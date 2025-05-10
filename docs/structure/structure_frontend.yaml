@@ -1,8 +1,57 @@
 # 個人アシスタントエージェント フロントエンド構造定義
 # 目的: プロジェクト内のフロントエンドコンポーネントとその関係性を定義
 
-frontend_components:
-  # 記憶システム関連コンポーネント
+# フロントエンドの技術スタック定義
+frontend_tech_stack:
+  framework: "Next.js"
+  ui_library: "Shadcn UI"
+  styling: "Tailwind CSS"
+  state_management: "Zustand"
+  data_visualization: "D3.js"
+  routing: "Next.js App Router"
+
+# アプリケーションページ構造
+app_pages:
+  - id: home-page
+    name: ホームページ
+    path: src/app/page.tsx
+    description: アプリケーションのトップページ
+    dependencies: []
+
+  - id: memory-page
+    name: 記憶システムページ
+    path: src/app/memory/page.tsx
+    description: 記憶システムの情報を表示するページ
+    dependencies: []
+
+  - id: conversation-page
+    name: 会話ページ
+    path: src/app/conversation/page.tsx
+    description: 会話履歴と対話インターフェースを表示するページ
+    dependencies: []
+
+  - id: tasks-page
+    name: タスクページ
+    path: src/app/tasks/page.tsx
+    description: タスク一覧と管理機能を表示するページ
+    dependencies: []
+
+  - id: root-layout
+    name: ルートレイアウト
+    path: src/app/layout.tsx
+    description: すべてのページで共有される基本レイアウト
+    dependencies: [navigation]
+
+# 共通コンポーネント
+common_components:
+  - id: navigation
+    name: ナビゲーションコンポーネント
+    path: src/frontend/components/Navigation.tsx
+    description: アプリケーション内の各ページへのナビゲーションを提供するコンポーネント
+    dependencies: []
+
+# 記憶システム関連コンポーネント
+memory_components:
   - id: memory-display
     name: 記憶表示コンポーネント
     path: src/frontend/components/memory/MemoryDisplay.tsx
@@ -27,7 +76,8 @@ frontend_components:
     description: ユーザーの基本情報を表示するコンポーネント
     dependencies: []
 
-  # 会話履歴関連コンポーネント
+# 会話履歴関連コンポーネント
+conversation_components:
   - id: conversation-history
     name: 会話履歴表示
     path: src/frontend/components/conversation/ConversationHistory.tsx
@@ -52,7 +102,8 @@ frontend_components:
     description: 会話のコンテキスト認識を視覚的に表現するコンポーネント
     dependencies: [conversation-history]
 
-  # タスク状態関連コンポーネント
+# タスク状態関連コンポーネント
+task_components:
   - id: task-display
     name: タスク表示
     path: src/frontend/components/tasks/TaskDisplay.tsx
@@ -71,10 +122,24 @@ frontend_components:
     description: タスクのステップをナビゲートするコンポーネント
     dependencies: [task-display, task-progress]
 
-# フロントエンドの技術スタック定義
-frontend_tech_stack:
-  framework: "React"
-  ui_library: "Shadcn UI"
-  styling: "Tailwind CSS"
-  state_management: "Zustand"
-  data_visualization: "D3.js"
+# フロントエンド設定ファイル
+frontend_config_files:
+  - id: next-config
+    name: Next.js設定
+    path: next.config.js
+    description: Next.jsの設定ファイル
+
+  - id: tailwind-config
+    name: Tailwind CSS設定
+    path: tailwind.config.js
+    description: Tailwind CSSの設定ファイル
+
+  - id: postcss-config
+    name: PostCSS設定
+    path: postcss.config.js
+    description: PostCSSの設定ファイル
+
+  - id: global-css
+    name: グローバルCSS
+    path: src/frontend/styles/globals.css
+    description: アプリケーション全体で使用するグローバルスタイル

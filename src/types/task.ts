@@ -1,6 +1,6 @@
 /**
  * @file タスク関連の型定義
- * @module frontend/types/task
+ * @module types/task
  * @created 2025-05-11
  */
 

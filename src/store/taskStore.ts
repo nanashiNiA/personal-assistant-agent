@@ -1,6 +1,6 @@
 /**
  * @file タスク状態管理
- * @module frontend/store/taskStore
+ * @module store/taskStore
  * @created 2025-05-11
  */
 

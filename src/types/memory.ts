@@ -1,6 +1,6 @@
 /**
  * @file 記憶システム関連の型定義
- * @module frontend/types/memory
+ * @module types/memory
  * @created 2025-05-11
  */
 

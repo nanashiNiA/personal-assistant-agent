@@ -1,6 +1,6 @@
 /**
  * @file APIクライアント
- * @module frontend/lib/api
+ * @module lib/api
  * @created 2025-05-11
  */
 

@@ -1,6 +1,6 @@
 /**
  * @file 記憶情報の状態管理
- * @module frontend/store/memoryStore
+ * @module store/memoryStore
  * @created 2025-05-11
  */
 
